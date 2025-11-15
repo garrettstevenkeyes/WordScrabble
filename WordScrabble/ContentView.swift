@@ -15,6 +15,7 @@ struct ContentView: View {
     @State private var errorTitle = ""
     @State private var errorMessage = ""
     @State private var showingError = false
+    @State private var userScore = 0
     
     var body: some View {
         NavigationStack {
@@ -37,6 +38,7 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("New Game") {
+                        
                         startGame()
                     }
                 }
@@ -49,6 +51,10 @@ struct ContentView: View {
             .alert(errorTitle, isPresented: $showingError){ } message: {
                 Text(errorMessage)
             }
+        }
+        VStack{
+            Text("Score: \(userScore)")
+                .font(.largeTitle)
         }
     }
     
@@ -76,10 +82,15 @@ struct ContentView: View {
         withAnimation {
             usedWords.insert(answer, at: 0)
             newWord = ""
+            userScore += answer.count
         }
     }
     
     func startGame() {
+        // reset user score to 0 on start and clear words
+        userScore = 0
+        usedWords.removeAll()
+        
         if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt"){
             if let startWords = try? String(contentsOf: startWordsURL, encoding: .utf8) {
                 let allWords = startWords.components(separatedBy: "\n")
