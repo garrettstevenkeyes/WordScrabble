@@ -18,6 +18,7 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
+            Spacer()
             List {
                 Section {
                     TextField("enter your word", text: $newWord)
@@ -30,6 +31,13 @@ struct ContentView: View {
                             Image(systemName: "\(word.count).circle")
                             Text(word)
                         }
+                    }
+                }
+            }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("New Game") {
+                        startGame()
                     }
                 }
             }
